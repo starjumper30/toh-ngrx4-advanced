@@ -29,9 +29,9 @@ export class HeroDetailViewComponent implements OnChanges {
   @Output() saveRequested = new EventEmitter<Hero>();
 
   ngOnChanges(changes: InputChanges): void {
-    if (changes.hero) {
-      this.hero = {...this.hero};
-    }
+    // if (changes.hero) {
+    //   this.hero = {...this.hero};
+    // }
   }
 
   save(): void {
