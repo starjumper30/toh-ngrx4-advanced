@@ -45,7 +45,7 @@ export class HeroDetailComponent implements OnInit {
   }
 
   save(hero: Hero): void {
-    let action = hero.id ? new SaveHeroAction(hero) : new AddHeroAction(hero);
+    const action = hero.id ? new SaveHeroAction(hero) : new AddHeroAction(hero);
     this.store.dispatch(action);
     this.goBack();
   }

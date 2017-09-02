@@ -22,7 +22,7 @@ export function heroListReducer(state = initialState, action: heroActions.Action
       return {...state, heroes: [...state.heroes, action.payload], error: null};
     }
     case heroActions.SAVE_HERO_SUCCESS: {
-      let index = state.heroes.findIndex((hero: Hero) => hero.id === action.payload.id);
+      const index = state.heroes.findIndex((hero: Hero) => hero.id === action.payload.id);
       if (index >= 0) {
         const heroes: Hero[] = state.heroes;
         return {

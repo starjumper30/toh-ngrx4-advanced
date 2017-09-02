@@ -17,12 +17,15 @@ import {
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/do';
 import {of} from 'rxjs/observable/of';
+import {Store} from '@ngrx/store';
+import 'rxjs/add/operator/withLatestFrom';
+import {getHeroes} from './hero-list.reducer';
+import {Hero} from '../hero';
+import {AppState} from './reducers';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class HeroListEffects {
-  constructor(private actions$: Actions,
-              private svc: HeroService) {
-  }
 
   @Effect() loadHeroes$ = this.actions$
     .ofType(heroActions.LOAD_HEROES)
@@ -32,8 +35,15 @@ export class HeroListEffects {
 
   @Effect() getHero$ = this.actions$
     .ofType(heroActions.GET_HERO)
-    .map((action: GetHeroAction) => action.payload)
-    .switchMap(id => this.svc.getHero(id))
+    .withLatestFrom(this.store.select<Hero[]>(getHeroes))
+    .switchMap(([action, heroes]: [GetHeroAction, Hero[]]) => {
+      const id: number = action.payload;
+      if (heroes && heroes.length) {
+        return Observable.of(heroes.find((h: Hero) => h.id === id))
+      } else {
+        return this.svc.getHero(id);
+      }
+    })
     .map(hero => new GetHeroSuccessAction(hero))
     .catch(error => of(new SetErrorAction(error)));
 
@@ -57,4 +67,10 @@ export class HeroListEffects {
     .switchMap(hero => this.svc.deleteHero(hero))
     .map(hero => new DeleteHeroSuccessAction(hero))
     .catch(error => of(new SetErrorAction(error)));
+
+  constructor(private actions$: Actions,
+              private store: Store<AppState>,
+              private svc: HeroService) {
+  }
+
 }
