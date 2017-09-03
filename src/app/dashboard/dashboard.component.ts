@@ -6,6 +6,7 @@ import {AppState} from '../store/reducers';
 import {Store} from '@ngrx/store';
 import {getHeroes} from '../store/hero-list.reducer';
 import {Observable} from 'rxjs/Observable';
+import {List} from 'immutable';
 
 @Component({
   selector: 'my-dashboard',
@@ -15,7 +16,7 @@ import {Observable} from 'rxjs/Observable';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent {
-  heroes$: Observable<Hero[]>;
+  heroes$: Observable<List<Hero>>;
 
   constructor(private router: Router,
               store: Store<AppState>) {

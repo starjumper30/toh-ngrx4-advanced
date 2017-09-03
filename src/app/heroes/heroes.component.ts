@@ -11,22 +11,23 @@ import {
   DeleteHeroAction, SelectHeroAction,
   SetAddingHeroAction
 } from '../store/hero.actions';
+import {List} from 'immutable';
 
 @Component({
   selector: 'my-heroes',
-  template: `<my-heroes-view 
-              [heroes]="heroes$ | async"
-              [selectedHero]="selectedHero$ | async"
-              [addingHero]="addingHero$ | async"
-              [error]="error$ | async"
-              (addHeroInitiated)="addHero()"
-              (detailsRequested)="gotoDetail($event)"
-              (heroDeleted)="deleteHero($event)"
-              (heroSelected)="onSelect($event)"></my-heroes-view>`,
+  template: `<my-heroes-view
+          [heroes]="heroes$ | async"
+          [selectedHero]="selectedHero$ | async"
+          [addingHero]="addingHero$ | async"
+          [error]="error$ | async"
+          (addHeroInitiated)="addHero()"
+          (detailsRequested)="gotoDetail($event)"
+          (heroDeleted)="deleteHero($event)"
+          (heroSelected)="onSelect($event)"></my-heroes-view>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeroesComponent {
-  heroes$: Observable<Hero[]>;
+  heroes$: Observable<List<Hero>>;
   selectedHero$: Observable<Hero>;
   addingHero$: Observable<boolean>;
   error$: Observable<string>;

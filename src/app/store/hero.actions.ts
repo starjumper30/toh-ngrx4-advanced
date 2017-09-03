@@ -1,5 +1,6 @@
 import {Action} from '@ngrx/store';
 import {Hero} from '../hero';
+import {List} from 'immutable';
 
 export const LOAD_HEROES = '[Hero] Load Heroes';
 export const LOAD_HEROES_SUCCESS = '[Hero] Load Heroes Success';
@@ -30,7 +31,7 @@ export class LoadHeroesAction implements Action {
 export class LoadHeroesSuccessAction implements Action {
   readonly type = LOAD_HEROES_SUCCESS;
 
-  constructor(public payload: Hero[]) {
+  constructor(public payload: List<Hero>) {
   }
 }
 

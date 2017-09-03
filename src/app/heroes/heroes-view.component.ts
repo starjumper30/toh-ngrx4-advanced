@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 
 import {Hero} from '../hero';
+import {List} from 'immutable';
 
 @Component({
   selector: 'my-heroes-view',
@@ -12,7 +13,7 @@ import {Hero} from '../hero';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeroesViewComponent {
-  @Input() heroes: Hero[];
+  @Input() heroes: List<Hero>;
   @Input() selectedHero: Hero;
   @Input() addingHero = false;
   @Input() error: any;

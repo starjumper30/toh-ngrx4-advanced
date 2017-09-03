@@ -3,49 +3,52 @@ import * as heroActions from './hero.actions';
 
 import {AppState} from './reducers';
 import {createSelector, Selector} from '@ngrx/store';
+import {List, Record} from 'immutable';
 
-export type HeroListState = {
-  heroes: Hero[];
-  error?: any;
-};
+export interface HeroesListStateParams {
+  heroes?: List<Hero>,
+  error?: any
+}
 
-const initialState: HeroListState = {
-  heroes: []
-};
+export class HeroListState extends Record({heroes: List(), error: null}) {
+  readonly heroes: List<Hero>;
+  readonly error: any;
+
+  constructor(params?: HeroesListStateParams) {
+    params ? super(params) : super();
+  }
+
+  assign(values: HeroesListStateParams) {
+    return this.merge(values) as this;
+  }
+}
+
+const initialState: HeroListState = new HeroListState();
 
 export function heroListReducer(state = initialState, action: heroActions.Actions): HeroListState {
   switch (action.type) {
     case heroActions.LOAD_HEROES_SUCCESS: {
-      return {...state, heroes: action.payload, error: null};
+      return state.assign({heroes: action.payload, error: null});
     }
     case heroActions.ADD_HERO_SUCCESS: {
-      return {...state, heroes: [...state.heroes, action.payload], error: null};
+      return state.assign({heroes: state.heroes.push(action.payload), error: null});
     }
     case heroActions.SAVE_HERO_SUCCESS: {
-      const index = state.heroes.findIndex((hero: Hero) => hero.id === action.payload.id);
+      const index = findHeroIndex(state, action.payload.id);
       if (index >= 0) {
-        const heroes: Hero[] = state.heroes;
-        return {
-          ...state, error: null, heroes: [
-            ...heroes.slice(0, index),
-            action.payload,
-            ...state.heroes.slice(index + 1)
-          ]
-        };
+        return state.assign({heroes: state.heroes.set(index, action.payload), error: null});
       }
       return state;
     }
     case heroActions.DELETE_HERO_SUCCESS: {
-      return {
-        ...state, error: null, heroes: state.heroes.filter(hero => {
-          return hero.id !== action.payload.id;
-        })
-      };
+      const index = findHeroIndex(state, action.payload.id);
+      if (index >= 0) {
+        return state.assign({heroes: state.heroes.remove(index), error: null});
+      }
+      return state;
     }
     case heroActions.SET_ERROR: {
-      return {
-        ...state, error: action.payload
-      };
+      return state.assign({error: action.payload});
     }
     default: {
       return state;
@@ -53,10 +56,14 @@ export function heroListReducer(state = initialState, action: heroActions.Action
   }
 }
 
+function findHeroIndex(state: HeroListState, id: number): number {
+  return state.heroes.findIndex((hero: Hero) => hero.id === id);
+}
+
 const getHeroListState: Selector<AppState, HeroListState> =
   (state: AppState) => state.heroes;
 
-export const getHeroes: Selector<AppState, Hero[]> =
+export const getHeroes: Selector<AppState, List<Hero>> =
   createSelector(getHeroListState, (state: HeroListState) => state.heroes);
 
 export const getError: Selector<AppState, any> =

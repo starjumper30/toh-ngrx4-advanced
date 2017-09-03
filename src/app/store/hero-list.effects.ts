@@ -23,6 +23,7 @@ import {getHeroes} from './hero-list.reducer';
 import {Hero} from '../hero';
 import {AppState} from './reducers';
 import {Observable} from 'rxjs/Observable';
+import {List} from 'immutable';
 
 @Injectable()
 export class HeroListEffects {
@@ -30,15 +31,15 @@ export class HeroListEffects {
   @Effect() loadHeroes$ = this.actions$
     .ofType(heroActions.LOAD_HEROES)
     .switchMap(() => this.svc.getHeroes())
-    .map(heroes => new LoadHeroesSuccessAction(heroes))
+    .map(heroes => new LoadHeroesSuccessAction(List(heroes)))
     .catch(error => of(new SetErrorAction(error)));
 
   @Effect() getHero$ = this.actions$
     .ofType(heroActions.GET_HERO)
-    .withLatestFrom(this.store.select<Hero[]>(getHeroes))
-    .switchMap(([action, heroes]: [GetHeroAction, Hero[]]) => {
+    .withLatestFrom(this.store.select<List<Hero>>(getHeroes))
+    .switchMap(([action, heroes]: [GetHeroAction, List<Hero>]) => {
       const id: number = action.payload;
-      if (heroes && heroes.length) {
+      if (heroes && heroes.size) {
         return Observable.of(heroes.find((h: Hero) => h.id === id))
       } else {
         return this.svc.getHero(id);

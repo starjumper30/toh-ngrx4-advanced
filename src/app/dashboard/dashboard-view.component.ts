@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 
 import {Hero} from '../hero';
+import {List} from 'immutable';
 
 @Component({
   selector: 'my-dashboard-view',
@@ -12,7 +13,7 @@ import {Hero} from '../hero';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardViewComponent {
-  @Input() heroes: Hero[];
+  @Input() heroes: List<Hero>;
   @Output() heroClicked: EventEmitter<Hero> = new EventEmitter<Hero>();
 
   gotoDetail(hero: Hero): void {

@@ -1,34 +1,46 @@
-import {Hero} from '../hero';
 import {createSelector, Selector} from '@ngrx/store';
+import {Record} from 'immutable';
+import {Hero} from '../hero';
 import {AppState} from './reducers';
 import * as heroActions from './hero.actions';
 
-export type HeroState = {
-  selectedHero: Hero,
-  addingHero: boolean
-};
+export interface HeroStateParam {
+  selectedHero?: Hero,
+  addingHero?: boolean
+}
 
-const initialState: HeroState = {
-  selectedHero: null,
-  addingHero: false
-};
+export class HeroState extends Record({selectedHero: null, addingHero: false}) {
+  readonly selectedHero: Hero;
+  readonly addingHero: boolean;
+
+  constructor(params?: HeroStateParam) {
+    params ? super(params) : super();
+  }
+
+  assign(values: HeroStateParam) {
+    return this.merge(values) as this;
+  }
+}
+
+const initialState: HeroState = new HeroState();
+const blankHero: Hero = new Hero();
 
 export function heroReducer(state = initialState, action: heroActions.Actions): HeroState {
   switch (action.type) {
     case heroActions.RESET_BLANK_HERO: {
-      return {...state, selectedHero: new Hero()};
+      return state.assign({selectedHero: blankHero});
     }
     case heroActions.SET_ADDING_HERO: {
-      return {...state, selectedHero: null, addingHero: action.payload};
+      return state.assign({selectedHero: null, addingHero: action.payload});
     }
     case heroActions.GET_HERO_SUCCESS: {
-      return {...state, selectedHero: action.payload};
+      return state.assign({selectedHero: action.payload});
     }
     case heroActions.DELETE_HERO_SUCCESS: {
-      return {...state, selectedHero: null};
+      return state.assign({selectedHero: null});
     }
     case heroActions.SELECT_HERO: {
-      return {...state, selectedHero: action.payload, addingHero: false};
+      return state.assign({selectedHero: action.payload, addingHero: false});
     }
     default: {
       return state;

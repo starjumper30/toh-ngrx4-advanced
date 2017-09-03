@@ -14,7 +14,7 @@ export class HeroService {
     return this.http
       .get(this.heroesUrl)
       .map(res => {
-        return res.json().data;
+        return res.json().data.map(hero => new Hero(hero));
       });
   }
 
@@ -24,7 +24,7 @@ export class HeroService {
     return this.http
       .get(url)
       .map(res => {
-        return res.json().data;
+        return new Hero(res.json().data);
       });
   }
 
@@ -56,7 +56,7 @@ export class HeroService {
     return this.http
       .post(this.heroesUrl, JSON.stringify(hero), { headers: headers })
       .map(res => {
-        return res.json().data;
+        return new Hero(res.json().data);
       });
   }
 
