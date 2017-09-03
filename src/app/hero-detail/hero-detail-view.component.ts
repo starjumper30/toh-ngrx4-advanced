@@ -3,18 +3,10 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
-  Output,
-  SimpleChange,
-  SimpleChanges
+  Output
 } from '@angular/core';
 
-import {Hero} from '../hero';
-
-class InputChanges implements SimpleChanges {
-  [propName: string]: SimpleChange;
-  hero: SimpleChange
-}
+import {Hero, HeroParam} from '../hero';
 
 @Component({
   selector: 'my-hero-detail-view',
@@ -22,20 +14,21 @@ class InputChanges implements SimpleChanges {
   styleUrls: ['./hero-detail-view.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeroDetailViewComponent implements OnChanges {
+export class HeroDetailViewComponent {
 
-  @Input() hero: Hero;
+  private _hero: Hero; // immutable
+  heroEdit: HeroParam; // mutable
+
+  @Input() set hero(hero: Hero) {
+    this._hero = hero;
+    this.heroEdit = hero ? hero.asMutable() as HeroParam : null;
+  }
+
   @Output() close = new EventEmitter<Hero>();
   @Output() saveRequested = new EventEmitter<Hero>();
 
-  ngOnChanges(changes: InputChanges): void {
-    // if (changes.hero) {
-    //   this.hero = {...this.hero};
-    // }
-  }
-
   save(): void {
-    this.saveRequested.emit(this.hero);
+    this.saveRequested.emit(this._hero.assign(this.heroEdit));
   }
 
   goBack(): void {
