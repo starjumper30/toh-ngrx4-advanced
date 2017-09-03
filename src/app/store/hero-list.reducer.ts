@@ -1,9 +1,11 @@
 import {Hero} from '../hero';
-import * as heroActions from './hero.actions';
 
 import {AppState} from './reducers';
 import {createSelector, Selector} from '@ngrx/store';
 import {List, Record} from 'immutable';
+import {GeneralActionEnum} from './general.actions';
+import {HeroActionEnum} from './hero.actions';
+import {TypedAction} from 'ngrx-enums';
 
 export interface HeroesListStateParams {
   heroes?: List<Hero>,
@@ -25,35 +27,31 @@ export class HeroListState extends Record({heroes: List(), error: null}) {
 
 const initialState: HeroListState = new HeroListState();
 
-export function heroListReducer(state = initialState, action: heroActions.Actions): HeroListState {
-  switch (action.type) {
-    case heroActions.LOAD_HEROES_SUCCESS: {
+export function heroListReducer(state = initialState, action: TypedAction<any>): HeroListState {
+    if (HeroActionEnum.LOAD_HEROES_SUCCESS.matches(action)) {
       return state.assign({heroes: action.payload, error: null});
-    }
-    case heroActions.ADD_HERO_SUCCESS: {
+
+    } else if (HeroActionEnum.ADD_HERO_SUCCESS.matches(action)) {
       return state.assign({heroes: state.heroes.push(action.payload), error: null});
-    }
-    case heroActions.SAVE_HERO_SUCCESS: {
+
+    } else if (HeroActionEnum.SAVE_HERO_SUCCESS.matches(action)) {
       const index = findHeroIndex(state, action.payload.id);
       if (index >= 0) {
         return state.assign({heroes: state.heroes.set(index, action.payload), error: null});
       }
       return state;
-    }
-    case heroActions.DELETE_HERO_SUCCESS: {
+
+    } else if (HeroActionEnum.DELETE_HERO_SUCCESS.matches(action)) {
       const index = findHeroIndex(state, action.payload.id);
       if (index >= 0) {
         return state.assign({heroes: state.heroes.remove(index), error: null});
       }
       return state;
-    }
-    case heroActions.SET_ERROR: {
+
+    } else if (GeneralActionEnum.SET_ERROR.matches(action)) {
       return state.assign({error: action.payload});
     }
-    default: {
-      return state;
-    }
-  }
+    return state;
 }
 
 function findHeroIndex(state: HeroListState, id: number): number {

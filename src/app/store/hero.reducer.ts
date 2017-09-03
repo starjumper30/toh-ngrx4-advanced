@@ -2,7 +2,8 @@ import {createSelector, Selector} from '@ngrx/store';
 import {Record} from 'immutable';
 import {Hero} from '../hero';
 import {AppState} from './reducers';
-import * as heroActions from './hero.actions';
+import {HeroActionEnum} from './hero.actions';
+import {TypedAction} from 'ngrx-enums';
 
 export interface HeroStateParam {
   selectedHero?: Hero,
@@ -25,27 +26,23 @@ export class HeroState extends Record({selectedHero: null, addingHero: false}) {
 const initialState: HeroState = new HeroState();
 const blankHero: Hero = new Hero();
 
-export function heroReducer(state = initialState, action: heroActions.Actions): HeroState {
-  switch (action.type) {
-    case heroActions.RESET_BLANK_HERO: {
-      return state.assign({selectedHero: blankHero});
-    }
-    case heroActions.SET_ADDING_HERO: {
-      return state.assign({selectedHero: null, addingHero: action.payload});
-    }
-    case heroActions.GET_HERO_SUCCESS: {
-      return state.assign({selectedHero: action.payload});
-    }
-    case heroActions.DELETE_HERO_SUCCESS: {
-      return state.assign({selectedHero: null});
-    }
-    case heroActions.SELECT_HERO: {
-      return state.assign({selectedHero: action.payload, addingHero: false});
-    }
-    default: {
-      return state;
-    }
+export function heroReducer(state = initialState, action: TypedAction<any>): HeroState {
+  if (HeroActionEnum.RESET_BLANK_HERO.matches(action)) {
+    return state.assign({selectedHero: blankHero});
+
+  } else if (HeroActionEnum.SET_ADDING_HERO.matches(action)) {
+    return state.assign({selectedHero: null, addingHero: action.payload});
+
+  } else if (HeroActionEnum.GET_HERO_SUCCESS.matches(action)) {
+    return state.assign({selectedHero: action.payload});
+
+  } else if (HeroActionEnum.DELETE_HERO_SUCCESS.matches(action)) {
+    return state.assign({selectedHero: null});
+
+  } else if (HeroActionEnum.SELECT_HERO.matches(action)) {
+    return state.assign({selectedHero: action.payload, addingHero: false});
   }
+  return state;
 }
 
 const getHeroState: Selector<AppState, HeroState> =

@@ -4,15 +4,9 @@ import {ActivatedRoute, Params} from '@angular/router';
 import {Hero} from '../hero';
 import {AppState} from '../store/reducers';
 import {Store} from '@ngrx/store';
-import {
-  AddHeroAction,
-  GetHeroAction,
-  ResetBlankHeroAction,
-  SaveHeroAction,
-  SetAddingHeroAction
-} from '../store/hero.actions';
 import {getSelectedHero} from '../store/hero.reducer';
 import {Observable} from 'rxjs/Observable';
+import {HeroActionEnum} from '../store/hero.actions';
 
 @Component({
   selector: 'my-hero-detail',
@@ -35,23 +29,23 @@ export class HeroDetailComponent implements OnInit {
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
         const id: number = +params['id'];
-        this.store.dispatch(new GetHeroAction(id));
+        this.store.dispatch(HeroActionEnum.GET_HERO.toAction(id));
         this.navigated = true;
       } else {
-        this.store.dispatch(new ResetBlankHeroAction());
+        this.store.dispatch(HeroActionEnum.RESET_BLANK_HERO.toAction());
         this.navigated = false;
       }
     });
   }
 
   save(hero: Hero): void {
-    const action = hero.id ? new SaveHeroAction(hero) : new AddHeroAction(hero);
+    const action = hero.id ? HeroActionEnum.SAVE_HERO.toAction(hero) : HeroActionEnum.ADD_HERO.toAction(hero);
     this.store.dispatch(action);
     this.goBack();
   }
 
   goBack(): void {
-    this.store.dispatch(new SetAddingHeroAction(false));
+    this.store.dispatch(HeroActionEnum.SET_ADDING_HERO.toAction(false));
     if (this.navigated) {
       window.history.back();
     }

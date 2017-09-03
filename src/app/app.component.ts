@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AppState} from './store/reducers';
 import {Store} from '@ngrx/store';
-import {LoadHeroesAction} from './store/hero.actions';
+import {HeroActionEnum} from './store/hero.actions';
 
 @Component({
   selector: 'my-root',
@@ -25,6 +25,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     // ideally, we would use the defer() feature to initialize in effects,
     // but it seems to be broken at the moment.
-    this.store.dispatch(new LoadHeroesAction());
+    this.store.dispatch(HeroActionEnum.LOAD_HEROES.toAction());
   }
 }

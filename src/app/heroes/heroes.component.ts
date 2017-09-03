@@ -7,11 +7,8 @@ import {getError, getHeroes} from '../store/hero-list.reducer';
 import {Store} from '@ngrx/store';
 import {AppState} from '../store/reducers';
 import {getAddingHero, getSelectedHero} from '../store/hero.reducer';
-import {
-  DeleteHeroAction, SelectHeroAction,
-  SetAddingHeroAction
-} from '../store/hero.actions';
 import {List} from 'immutable';
+import {HeroActionEnum} from '../store/hero.actions';
 
 @Component({
   selector: 'my-heroes',
@@ -41,15 +38,15 @@ export class HeroesComponent {
   }
 
   addHero(): void {
-    this.store.dispatch(new SetAddingHeroAction(true));
+    this.store.dispatch(HeroActionEnum.SET_ADDING_HERO.toAction(true));
   }
 
   deleteHero(hero: Hero): void {
-    this.store.dispatch(new DeleteHeroAction(hero));
+    this.store.dispatch(HeroActionEnum.DELETE_HERO.toAction(hero));
   }
 
   onSelect(hero: Hero): void {
-    this.store.dispatch(new SelectHeroAction(hero));
+    this.store.dispatch(HeroActionEnum.SELECT_HERO.toAction(hero));
   }
 
   gotoDetail(hero): void {
