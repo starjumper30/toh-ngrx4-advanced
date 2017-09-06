@@ -25,7 +25,7 @@ export class HeroListState extends Record({heroes: List(), error: null}) {
   }
 }
 
-const initialState: HeroListState = new HeroListState();
+const initialState = new HeroListState();
 
 export function heroListReducer(state = initialState, action: TypedAction<any>): HeroListState {
     if (HeroActionEnum.LOAD_HEROES_SUCCESS.matches(action)) {

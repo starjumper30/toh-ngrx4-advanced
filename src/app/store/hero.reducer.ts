@@ -23,8 +23,8 @@ export class HeroState extends Record({selectedHero: null, addingHero: false}) {
   }
 }
 
-const initialState: HeroState = new HeroState();
-const blankHero: Hero = new Hero();
+const initialState = new HeroState();
+const blankHero = new Hero();
 
 export function heroReducer(state = initialState, action: TypedAction<any>): HeroState {
   if (HeroActionEnum.RESET_BLANK_HERO.matches(action)) {
