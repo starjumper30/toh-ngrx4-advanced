@@ -15,7 +15,6 @@ export class HeroAction<T> extends ActionEnumValue<T> {
 
 export class HeroActionEnumType extends ActionEnum<HeroAction<any>> {
 
-  LOAD_HEROES = new HeroAction<void>('[Hero] Load Heroes');
   LOAD_HEROES_SUCCESS = new HeroAction<List<Hero>>('[Hero] Load Heroes Success');
   GET_HERO = new HeroAction<number>('[Hero] Get Hero');
   GET_HERO_SUCCESS = new HeroAction<Hero>('[Hero] Get Hero Success');
