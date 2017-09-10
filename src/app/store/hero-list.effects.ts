@@ -16,7 +16,7 @@ import {TypedAction} from 'ngrx-enums';
 import {HeroService} from '../hero.service';
 import {HeroActionEnum} from './hero.actions';
 import {GeneralActionEnum} from './general.actions';
-
+import { defer } from 'rxjs/observable/defer';
 
 function handleError(error: any): Observable<TypedAction<any>> {
   return of(GeneralActionEnum.SET_ERROR.toAction(error));
@@ -25,10 +25,12 @@ function handleError(error: any): Observable<TypedAction<any>> {
 @Injectable()
 export class HeroListEffects {
 
-  @Effect() loadHeroes$ = HeroActionEnum.LOAD_HEROES.of(this.actions$)
-    .switchMap(() => this.svc.getHeroes())
-    .map(heroes => HeroActionEnum.LOAD_HEROES_SUCCESS.toAction(List(heroes)))
-    .catch(handleError);
+  @Effect()
+  init$ = defer(() => {
+    return this.svc.getHeroes()
+      .map(heroes => HeroActionEnum.LOAD_HEROES_SUCCESS.toAction(List(heroes)))
+      .catch(handleError);
+  });
 
   @Effect() getHero$ = HeroActionEnum.GET_HERO.of(this.actions$)
     .withLatestFrom(this.store.select<List<Hero>>(getHeroes))
