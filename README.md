@@ -11,23 +11,24 @@ Compared to the base version, this version makes the following changes in consec
 3. [Moving](https://github.com/LMFinney/toh-ngrx4/commit/9a1a7b92a64f92573c2bd6e565c57ae18e100751) data management into
  [@ngrx v4](https://github.com/ngrx/platform) store and effects (combined with implementing the 
 [Presentational/Container](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0) component pattern).
+4. Enforcing [immutability](https://github.com/ngrx/store/issues/290) in the @ngrx store.
+5. Using [ngrx-enums](https://github.com/LMFinney/ngrx-enums) to remove boilerplate in @ngrx actions and reducers.
 
 Further steps that aren't included at this point could include the following:
 1. [Internationalization](https://angular.io/guide/i18n) support.
 2. Introducing [Reactive forms](https://angular.io/guide/reactive-forms) for the search box.
-3. Enforcing [immutability](https://github.com/ngrx/store/issues/290) in the @ngrx store.
-4. Using [ngrx-enums](https://github.com/LMFinney/ngrx-enums) to remove boilerplate in @ngrx actions and reducers.
 
 Thanks to [Nick Klepinger](http://bodiddlie.github.io/ng-2-toh-with-ngrx-suite/) for providing inspiration through an earlier 
 [update](https://github.com/bodiddlie/rxheroes) of Tour of Heroes using older versions of @ngrx, etc.
 
-I presented on this project at [Angular Lunch](https://angularlunch.wordpress.com/) in August 2017: 
+Steps 1-3 were presented by Lance Finney at [Angular Lunch](https://angularlunch.wordpress.com/) in August 2017: 
 [Presentation](https://docs.google.com/presentation/d/1maxom8L2S9XY7sokrr7hPrMyrnp8p_rwqVTRZEcVf0o/edit?usp=sharing)
 
+Steps 4-5 will be presented by Christina Hardin at [Angular Lunch](https://angularlunch.wordpress.com/) on September 20, 2017.
 ## Get the Code
 ```
-git clone https://github.com/LMFinney/toh-ngrx4.git
-cd toh-ngrx4
+git clone https://github.com/starjumper30/toh-ngrx4-advanced.git
+cd toh-ngrx4-advanced
 npm i
 ```
 
