@@ -7,7 +7,7 @@ export class GeneralAction<T> extends ActionEnumValue<T> {
 }
 
 export class GeneralActionEnumType extends ActionEnum<GeneralAction<any>> {
-  SET_ERROR: GeneralAction<any> = new GeneralAction<any>('[General] Set Error');
+  SET_ERROR = new GeneralAction<any>('[General] Set Error');
 
   constructor() {
     super();
@@ -15,4 +15,4 @@ export class GeneralActionEnumType extends ActionEnum<GeneralAction<any>> {
   }
 }
 
-export const GeneralActionEnum: GeneralActionEnumType = new GeneralActionEnumType();
+export const GeneralActionEnum = new GeneralActionEnumType();

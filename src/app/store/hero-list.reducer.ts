@@ -31,22 +31,16 @@ export function heroListReducer(state = initialState, action: TypedAction<any>):
     if (HeroActionEnum.LOAD_HEROES_SUCCESS.matches(action)) {
       return state.assign({heroes: action.payload, error: null});
 
-    } else if (HeroActionEnum.ADD_HERO_SUCCESS.matches(action)) {
-      return state.assign({heroes: state.heroes.push(action.payload), error: null});
-
-    } else if (HeroActionEnum.SAVE_HERO_SUCCESS.matches(action)) {
+    } else if (HeroActionEnum.ADD_HERO_SUCCESS.matches(action, HeroActionEnum.SAVE_HERO_SUCCESS)) {
       const index = findHeroIndex(state, action.payload.id);
-      if (index >= 0) {
-        return state.assign({heroes: state.heroes.set(index, action.payload), error: null});
-      }
-      return state;
+      const heroes = index >= 0 ? state.heroes.set(index, action.payload) : state.heroes.push(action.payload);
+      return state.assign({heroes, error: null});
 
     } else if (HeroActionEnum.DELETE_HERO_SUCCESS.matches(action)) {
       const index = findHeroIndex(state, action.payload.id);
       if (index >= 0) {
         return state.assign({heroes: state.heroes.remove(index), error: null});
       }
-      return state;
 
     } else if (GeneralActionEnum.SET_ERROR.matches(action)) {
       return state.assign({error: action.payload});
