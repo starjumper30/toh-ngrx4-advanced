@@ -24,7 +24,9 @@ Thanks to [Nick Klepinger](http://bodiddlie.github.io/ng-2-toh-with-ngrx-suite/)
 Steps 1-3 were presented by Lance Finney at [Angular Lunch](https://angularlunch.wordpress.com/) in August 2017: 
 [Presentation](https://docs.google.com/presentation/d/1maxom8L2S9XY7sokrr7hPrMyrnp8p_rwqVTRZEcVf0o/edit?usp=sharing)
 
-Steps 4-5 will be presented by Christina Hardin at [Angular Lunch](https://angularlunch.wordpress.com/) on September 20, 2017.
+Steps 4-5 were presented by Christina Hardin at [Angular Lunch](https://angularlunch.wordpress.com/) on September 20, 2017: 
+[Presentation](https://www.dropbox.com/s/wyhmoobox1ly7y3/AngularLunch_Sep202017.pptx?dl=0)
+
 ## Get the Code
 ```
 git clone https://github.com/starjumper30/toh-ngrx4-advanced.git
